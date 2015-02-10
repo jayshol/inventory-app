@@ -1,19 +1,26 @@
-var items = [
-				{
-					name :'Couch',
-					description: 'Ikea this is comfortable!. Although oddly small and modular it may be the most wonderful couch of my life. Oh and so modern'				
-				},
-				{
-					name : 'Laptop',
-					description: 'Beep boop goes the laptop and I create a node awesomeness all day long'
-				},
-				{
-					name: 'foobar',
-					description :'This is a test for the inventory description system. It is only a test.'
-				}
-
-			];
+var _ = require('lodash');
+var items = [];
 
 exports.list = function(req, res){
 	res.render('index', {items : items});
+}
+
+exports.show = function(req, res){
+	var item = _.find(items, { id : req.params.id});
+	res.render('show', item);
+}
+
+exports.add = function(req, res){
+	res.render('add');
+}
+
+exports.create = function(req, res){
+	var item = {
+		id : _.uniqueId(),
+		name: req.body.name,
+		description:req.body.description
+	};
+
+	items.push(item);
+	res.redirect('/');
 }
