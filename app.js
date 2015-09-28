@@ -20,15 +20,37 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.route('/')
+/* app.route('/')
     .get(inventory.list)
     .post(inventory.create);
+*/
+
+app.use(function(req, res, next){
+    res.locals.showTests = app.get('env') !== 'production' && req.query.test === 1;
+    next();
+});
+
+app.get('/', function(req, res, next){
+    var obj = inventory.list(req.params.id);    
+    res.render('index', obj);
+});
+
+app.post('/', function(req, res, next){
+    var name = req.body.name;
+    var description = req.body.description;
+    var obj = inventory.create(name, description);  
+    res.redirect(302, '/');
+});
 
 app.get('/add', inventory.add);
 
 app.route('/:id')
-    .get(inventory.show);
+    .get(inventory.show)
+    .post(inventory.update)
+    .delete(inventory.delete);
+
+app.route('/:id/edit')
+        .get(inventory.edit);   
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

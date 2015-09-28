@@ -2,11 +2,26 @@
 <html>
 <head>
 	<title>Inventory App</title>
-	<link rel="stylesheet" href="/stylesheets/style.css">
+	{{#if showTests}}
+			<link rel="stylesheet" href="/stylesheets/mocha.css">
+	{{/if}}
+	<link rel="stylesheet" href="/stylesheets/style.css">	
 </head>
 <body>
 	<div class="container">
 		{{{body}}}
 	</div>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src='/javascripts/main.js'></script>
+	{{#if showTests}}
+	<script src='/javascripts/chai.js'></script>
+	<script src='/javascripts/sinon-chai.js'></script>
+	<script src='/javascripts/sinon.js'></script>
+	<script src='/javascripts/mocha.js'></script>
+	<script src='/test/test-main.js'></script>
+	<script>
+		mocha.run();
+	</script>
+	{{/if}}
 </body>
 </html>
